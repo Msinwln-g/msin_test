@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../lib/jquery-3.4.0.js"></script>
+  </head>
+  <body>
+    <button>点击</button>
+    <iframe src="./a.html" frameborder="0" id="ifram"></iframe>
+    <script>
+      $("button").on("click", function () {
+        // 通过live serve  服务打开页面，而不是本地打开
+        // 1获取iframe的窗口对象
+        // 通过DOM选中iframe标签，然后获取iframe下的属性contentWindow
+        var res = $("#ifram")[0].contentWindow;
+        console.log(res)  //此处打印的是a页面的window
+        // 不可以直接访问，要启动服务
+        // 2获取dom对象
+        var p = res.document.querySelector('p')
+        console.log($(p).css({color:'red'}))
+      });
+    //   window.parnet可以找到父窗口window对象
+   
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../lib/jquery-3.4.0.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <p>hhhhh</p>
+      <input type="text" id="username" name="username"/>
+      <button>子窗口点击</button>
+    </div>
+    <script>
+         // iframe中的window不是浏览器的window
+        // 这里的window是子窗口的window
+        // ------被iframe加载的页面是window的iframe窗口的window
+
+        // 需求：username传递到父窗口中
+        // 1 获取本窗口的数据
+        // 2 获取父窗口，找到父窗口中属性并赋值 
+        $('button').on('click',function (e) { 
+            e.preventDefault()
+            // 1 获取本窗口的数据
+            var username = $('#username').val()
+            console.log(username)
+            // 2获取父窗口（即浏览器的window），并对父窗口中的属性赋值
+            var parentWindow = window.parent
+            console.log(parentWindow)
+            // 相当于在浏览器窗口下声明了一个全局变量  username
+            // 全局下有username就直接赋值，没有就创建
+            parentWindow.username = username
+         })
+    </script>
+  </body>
+</html>

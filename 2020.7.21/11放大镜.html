@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../lib//jquery-3.4.0.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .glass {
+      width: 600px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .bigImage {
+      width: 470px;
+      height: 270px;
+    }
+    .bigImage img {
+      width: 470px;
+      height: 270px;
+      display: none;
+    }
+    /* .active {
+        display: block !important;
+      } */
+    .glassView {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      right: -70px;
+      top: 0;
+      overflow: hidden;
+      display: none;
+    }
+    .glassView img {
+      width: 940px;
+      height: 540px;
+      display: none;
+      position: relative;
+    }
+    .smImage {
+      width: 470px;
+      margin: 20px 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .smImage img {
+      width: 150px;
+      height: 80px;
+      opacity: 0.6;
+    }
+    .mark {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      opacity: 0.5;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
+  <body>
+    <div class="glass">
+      <!-- 放大镜图片 -->
+      <div class="glassView">
+        <img src="./images/1.jpg" alt="" />
+        <img src="./images/2.jpg" alt="" />
+        <img src="./images/3.jpg" alt="" />
+      </div>
+      <!-- 大图 -->
+      <div class="bigImage">
+        <img src="./images/1.jpg" alt="" />
+        <img src="./images/2.jpg" alt="" />
+        <img src="./images/3.jpg" alt="" />
+        <!-- 放大镜标记 -->
+        <div class="mark"></div>
+      </div>
+      <!-- 小图 -->
+      <div class="smImage">
+        <img src="./images/1.jpg" alt="" />
+        <img src="./images/2.jpg" alt="" />
+        <img src="./images/3.jpg" alt="" />
+      </div>
+    </div>
+    <script>
+      // 第一步：css初始化样式全部为不选中 状态
+      // 第二步：处理浏览器加载的样式  在css基础上
+      $(window).ready(function () {
+        // 第一个功能tab切换
+        var x = 0;
+        // " + x + "  相当于模板字符串   `${x}`  
+        $(".bigImage>img:eq(" + x + ")").css({
+          display: "block",
+        });
+        $(`.smImage>img:eq(${x})`).css({ opacity: 1 });
+        // 鼠标移入
+        $(".smImage>img").on("mouseover", function () {
+          $(".bigImage>img:eq(" + x + ")").css({ display: "none" });
+          $(`.smImage>img:eq(${x})`).css({ opacity: 0.6 });
+          $(".glassView>img:eq(" + x + ")").css({
+            display: "none",
+          });
+          x = $(this).index();
+          $(`.smImage>img:eq(${x})`).css({ opacity: 1 });
+          $(".bigImage>img:eq(" + x + ")").css({
+            display: "block",
+          });
+        });
+        //  第二个功能  显示隐藏
+        // 鼠标移动到bigImage mark 为显示，移出为隐藏
+        $(".mark").css({
+          display: "none",
+        });
+        $(".bigImage").on("mouseover", function () {
+          $(".mark").css({
+            display: "block",
+          });
+          $(".glassView").css({
+            display: "block",
+          });
+          console.log(x);
+          $(".glassView>img:eq(" + x + ")").css({
+            display: "block",
+          });
+        });
+        $(".bigImage").on("mouseleave", function () {
+          console.log("移出了");
+          $(".mark").css({
+            display: "none",
+          });
+          $(".glassView").css({
+            display: "none",
+          });
+        });
+        $(".bigImage").on("mousemove", function (e) {
+          //   mark边框到浏览器页面的距离减去图片边框到页面的距离
+          var moveX = e.pageX - $(this).offset().left - $(".mark").width() / 2;
+          var moveY = e.pageY - $(this).offset().top - $(".mark").height() / 2;
+          var maxX = $(this).width() - $(".mark").width();
+          var maxY = $(this).height() - $(".mark").height();
+          $(".mark").css({
+            left: moveX + "px",
+            top: moveY + "px",
+          });
+          if (moveX < 0) {
+            moveX = 0;
+            $(".mark").css({
+              left: moveX + "px",
+            });
+          }
+          if (moveY < 0) {
+            moveY = 0;
+            $(".mark").css({
+              top: moveY + "px",
+            });
+          }
+          if (moveX > maxX) {
+            moveX = maxX;
+            $(".mark").css({
+              left: moveX + "px",
+            });
+          }
+          if (moveY > maxY) {
+            moveY = maxY;
+            $(".mark").css({
+              top: moveY + "px",
+            });
+          }
+          var glassX = 2 * moveX;
+          var glassY = 2 * moveY;
+          $(`.glassView>img:eq(${x})`).css({
+            right: glassX + "px",
+            bottom: glassY + "px",
+          });
+        });
+      });
+
+      // 找到显示放大图片移动的规律
+      // 第四个功能方法镜
+      // 第一步：css 初始化样式；全部为不选中状态
+
+      // 第一步：处理浏览器加载的样式 在css 基础上
+      //   $(window).ready(function () {
+      //     var x = 0;
+      //     $(".bigImage>img:eq(" + x + ")").css({ display: "block" });
+      //     $(`.smImage>img:eq(${x})`).css({ opacity: 1 });
+      //     //  第一个狗能tab切换
+      //     $(".smImage>img").on("mouseover", function () {
+      //       $(".bigImage>img:eq(" + x + ")").css({ display: "none" });
+      //       $(`.smImage>img:eq(${x})`).css({ opacity: 0.6 });
+      //       $(".glassView>img:eq(" + x + ")").css({
+      //         display: "none",
+      //       });
+      //       x = $(this).index();
+      //       $(".bigImage>img:eq(" + x + ")").css({ display: "block" });
+      //       $(`.smImage>img:eq(${x})`).css({ opacity: 1 });
+      //     });
+
+      //     // 第二个功能 mark 的显示隐藏 拖动的功能
+      //     // 鼠标移动到 bigImage mark 为显示；移出为隐藏
+      //     $(".mark").css({
+      //       display: "none",
+      //     });
+      //     $(".bigImage").on("mouseover", function () {
+      //       $(".mark").css({
+      //         display: "block",
+      //       });
+      //       $(".glassView").css({
+      //         display: "block",
+      //       });
+      //       console.log(x);
+      //       $(".glassView>img:eq(" + x + ")").css({
+      //         display: "block",
+      //       });
+      //     });
+      //     $(".bigImage").on("mouseleave", function () {
+      //       console.log("移出了");
+      //       $(".mark").css({
+      //         display: "none",
+      //       });
+      //       $(".glassView").css({
+      //         display: "none",
+      //       });
+      //     });
+
+      //     // 第三个功能拖拽功能
+      //     $(".bigImage").on("mousemove", function (e) {
+      //       // console.log(e.offsetX);
+      //       // console.log(e.offsetY);
+      //       // console.log($(".mark").height());
+      //       var moveX = e.pageX - $(this).offset().left - $(".mark").width() / 2;
+      //       var moveY = e.pageY - $(this).offset().top - $(".mark").height() / 2;
+      //       // console.log(moveX, moveY);
+      //       //  根据moveX moveY  求最大值和最小值
+      //       $(".mark").css({
+      //         left: moveX + "px",
+      //         top: moveY + "px",
+      //       });
+      //       if (moveX < 0) {
+      //         moveX = 0
+      //         $(".mark").css({
+      //           left: moveX + "px",
+      //           // top: moveY + "px",
+      //         });
+      //       }
+      //       if (moveY < 0) {
+      //         moveY = 0;
+      //         $(".mark").css({
+      //           // left: moveX + "px",
+      //           top: moveY + "px",
+      //         });
+      //       }
+      //       var maxX = $(this).width() - $(".mark").width();
+      //       if (moveX > maxX) {
+      //         moveX = maxX;
+      //         $(".mark").css({
+      //           left: moveX + "px",
+      //           // top: moveY + "px",
+      //         });
+      //       }
+      //       var maxY = $(this).height() - $(".mark").height();
+      //       if (moveY > maxY) {
+      //         moveY = maxY;
+      //         $(".mark").css({
+      //           // left: moveX + "px",
+      //           top: moveY + "px",
+      //         });
+      //       }
+
+      //       // 找到显示放大图片移动的规律
+      //       // 第四个功能方法镜
+      //       var glassX = 2 * moveX;
+      //       var glassY = 2 * moveY;
+      //       $(`.glassView>img:eq(${x})`).css({
+      //         right: glassX + "px",
+      //         bottom: glassY + "px",
+      //       });
+      //     });
+      //   });
+    </script>
+  </body>
+</html>

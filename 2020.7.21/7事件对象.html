@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib//jquery-3.4.0.js"></script>
+</head>
+<body>
+    <h2>我是内容1</h2>
+    <h2>我是内容2</h2>
+    <h2>我是内容3</h2>
+    <script>
+        $('h2').on('click',function () { 
+            // 获取当前触发事件的元素   注意，这是一个dom元素
+            console.log(event.currentTarget)
+            // event.currentTarget.style.color = 'red'
+            $(event.currentTarget).css({color:'red'})
+         })
+    </script>
+</body>
+</html>
+<!-- jQuery在修改Dom元素的时候，看似修改了好多次（修改的是假的DOM，jQueryDOM），但是在jQuery底层逻辑中，只对dom修改一次，提高了性能 -->
+
+
+<!-- jQuery性能优化：
+    1、减少操作 dom树的次数   用 jq api 修改的都是【虚假dom】，当虚拟dom修改完毕后jq会一次性修改dom
+      jq底层逻辑操作dom程序异步
+-->

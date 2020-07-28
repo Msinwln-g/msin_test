@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/jquery-3.4.0.js"></script>
+</head>
+<body>
+    <input type="checkbox" value="1">666
+    <input type="checkbox" value="2">sixsixsix
+    <input type="checkbox" value="3">1
+    <input type="checkbox" value="4">2
+    <input type="checkbox" value="5">3
+    <button>提交</button>
+    <script>
+        // 如何获取勾选的内容
+        var checkArr = []  //用来存放所有勾选的值
+        $('input:checkbox').on('click',function () { 
+            console.log($(this))
+         })
+
+        // $('button').on('click',function () { 
+        //     $('input:checked').each(function (index,item) {
+        //         console.log(item.value)
+        //         checkArr.push(item.value)
+        //       })
+        //     console.log($('input:checked'),checkArr)
+        //  })
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../lib/jquery-3.4.0.js"></script>
+    <form action="">
+        <label for="">
+            <input type="text" name="username">
+            <div>
+                <select name="city" id="city">
+                    <option value="nanjing">南京</option>
+                    <option value="nanjing1">南京那旮旯</option>
+                    <option value="nanjing2">南京那旮旯的旮旯</option>
+                </select>
+            </div>
+            <div>
+                <input type="checkbox" value="liulan" name="liulan">浏览
+                <input type="checkbox" value="pinguo" name="pinguo">好好
+                <input type="checkbox" value="aa" name="aa">啦啦
+            </div>
+            <div>
+                <input type="radio" id="sex" name="sex" value="nv">女
+                <input type="radio" id="sex" name="sex" value="nan">男
+            </div>
+            <div>
+                <button>提交</button>
+            </div>
+        </label>
+    </form>
+    <script>
+        $('form').on('click',function (e) { 
+            e.preventDefault()
+            // 获取表单中所有添加的内容
+            var res = $('form').serializeArray()
+            console.log(res)
+            // checkbox的
+            console.log($('input:checked'))
+            // 多选：根据请求参数的数结构对res进一步
+         })
+    </script>
+</body>
+</html>

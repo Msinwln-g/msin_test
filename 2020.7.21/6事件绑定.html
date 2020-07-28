@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/jquery-3.4.0.js"></script>
+</head>
+<body>
+    <button>点击</button>
+    <script>
+        var x = 0
+        function callFn() { 
+            ++x
+            // 当x等5时，删除点击事件
+            console.log(x)
+            if(x === 5){
+                // off(eventName,eventFun)删除事件
+                $('button').off('click',callFn)
+            }
+         }
+         $('button').on('click',callFn)
+    </script>
+</body>
+</html>
